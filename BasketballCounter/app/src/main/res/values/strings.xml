@@ -1,0 +1,16 @@
+<resources>
+    <string name="toolbar_label">BasketballCounter</string>
+    <string name="team_a_label">Celtics</string>
+    <string name="team_b_label">Lakers</string>
+    <string name="three_points_label">+3 Points</string>
+    <string name="two_points_label">+2 Points</string>
+    <string name="free_throw_label">Free Throw</string>
+    <string name="save_label">Save</string>
+    <string name="display_label">Display</string>
+    <string name="reset_label">Reset</string>
+    <string name="team_a_hint">Team A</string>
+    <string name="team_b_hint">Team B</string>
+    <string name="back_label">Back</string>
+    <string name="saved_label">The Scores Below Have Been Saved!</string>
+    <string name="spacing">---</string>
+</resources>
