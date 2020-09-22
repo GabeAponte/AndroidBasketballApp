@@ -6,11 +6,16 @@
     <string name="two_points_label">+2 Points</string>
     <string name="free_throw_label">Free Throw</string>
     <string name="save_label">Save</string>
+    <string name="update_label">Update</string>
     <string name="display_label">Display</string>
     <string name="reset_label">Reset</string>
     <string name="team_a_hint">Team A</string>
     <string name="team_b_hint">Team B</string>
     <string name="back_label">Back</string>
     <string name="saved_label">The Scores Below Have Been Saved!</string>
-    <string name="spacing">---</string>
+    <string name="updated_label">The Scores Below Have Been Updated!</string>
+    <string name="ImageView">WinnerPicture</string>
+    <string name="Versus">Team: %1$s vs. Team: %2$s</string>
+    <string name="Scores">%1$s : %2$s</string>
+    <string name="GameRecorded">Game Date:</string>
 </resources>

@@ -1,8 +1,11 @@
-package basketballCounter
+package database
 
 import androidx.room.TypeConverter
 import java.util.*
 
+/**
+ * TypeConverter class for game data stored in the db
+ */
 class GameTypeConverters {
     @TypeConverter
     fun fromDate(date: Date?): Long? {

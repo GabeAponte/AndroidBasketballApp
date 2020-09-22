@@ -3,15 +3,19 @@ package basketballCounter
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
+import java.util.*
 
 private const val TAG = "MainActivity"
-private const val MAIN_FRAG_TAG = "MainFrag"
-private const val LIST_FRAG_TAG = "ListFrag"
 
 /**
  * Main activity class for hosting fragments
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BasketballGameFragment.Callbacks, GameListFragment.Callbacks {
+
+    private val gameListViewModel: GameListViewModel by lazy {
+        ViewModelProviders.of(this).get(GameListViewModel::class.java)
+    }
 
     /**
      * Overrides the onCreate method to load fragments
@@ -23,45 +27,50 @@ class MainActivity : AppCompatActivity() {
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
-        // initialize both fragments and add them to the fragment_container,
-        // but only show the main basketball game fragment
         if (currentFragment == null) {
-
-            val mainFragment = BasketballGameFragment()
-            val listFragment = GameListFragment.newInstance()
-
+            val fragment = BasketballGameFragment.newInstance()
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_container, mainFragment, MAIN_FRAG_TAG)
-                .add(R.id.fragment_container, listFragment, LIST_FRAG_TAG)
-                .hide(listFragment)
-                .commit();
-        }
-
-        /*if (currentFragment == null) {
-            val fragment = GameListFragment.newInstance()
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .add(R.id.fragment_container, fragment)
                 .commit()
-        }*/
+        }
     }
 
     /**
-     * Overrides the onBackPressed() method so that users can return to the BasketballGameFragment when
-     * pressing the back button on the GameListFragment. Note this does not save data so the BasketballGameFragment will be reset
+     * Override for the onDisplayClicked method that switches to the GameListFragment
+     * and sends the winningTeam to it
      */
-    override fun onBackPressed(){
-        var count = supportFragmentManager.backStackEntryCount; // num of fragments in the backstack
-        // if there are no fragments in the backstack, go back like normal
-        if (count == 0) {
-            super.onBackPressed();
-        }
-        // if there are fragments in the backstack, pop off the first one so that the last view is visible.
-        else {
-            supportFragmentManager.popBackStack();
-        }
+    override fun onDisplayClicked(winningTeam : String) {
+        Log.d(TAG, "onDisplayClicked() called with Winning Team: $winningTeam")
+        val fragment = GameListFragment.newInstance(winningTeam)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
+
+    /**
+     * Override for the onGameSelected method that switches to the BasketballGameFragment
+     * and sends the selected GameID to it so that the game data is displayed
+     */
+    override fun onGameSelected(gameId: UUID) {
+        Log.d(TAG, "onGameSelected() called with Game ID: $gameId")
+        val fragment = BasketballGameFragment.newInstance(gameId)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    /**
+     * Override for the getGameListViewModel val that get the value of
+     * gameListViewModel
+     */
+    override val getGameListViewModel: GameListViewModel
+        get() = gameListViewModel
+
 
     /**
      * Adding logs messages for onStart, onResume, onPause, onStop and onDestroy

@@ -2,6 +2,7 @@ package basketballCounter
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import java.util.*
 
 private const val TAG =  "BasketballGameViewModel"
 
@@ -11,7 +12,7 @@ private const val TAG =  "BasketballGameViewModel"
 class BasketballGameViewModel : ViewModel() {
 
     // the basketballGame object to be used by the view model
-    private val basketballGame = BasketballGame(0, 0, "TeamA", "TeamB", "", java.util.Calendar.getInstance())
+    private val basketballGame = BasketballGame(UUID.randomUUID(),0, 0, "TeamA", "TeamB", Calendar.getInstance().time)
 
     // logs when the view model is created
     init {
