@@ -1,0 +1,4 @@
+package basketballCounter
+
+class BasketballGameRepository {
+}
