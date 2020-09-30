@@ -14,8 +14,9 @@
     <string name="back_label">Back</string>
     <string name="saved_label">The Scores Below Have Been Saved!</string>
     <string name="updated_label">The Scores Below Have Been Updated!</string>
-    <string name="ImageView">WinnerPicture</string>
+    <string name="ImageView">Picture</string>
     <string name="Versus">Team: %1$s vs. Team: %2$s</string>
     <string name="Scores">%1$s : %2$s</string>
+    <string name="Weather">%1$s: %2$s\u2109 \u0020 | \u0020 %3$s\uFF05 Humidity</string>
     <string name="GameRecorded">Game Date:</string>
 </resources>

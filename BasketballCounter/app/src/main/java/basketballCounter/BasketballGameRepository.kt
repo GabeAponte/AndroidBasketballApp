@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import database.BasketballGameDatabase
+import java.io.File
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -26,6 +27,7 @@ class BasketballGameRepository private constructor(context: Context) {
 
     private val basketballGameDao = database.basketballGameDao()
     private val executor = Executors.newSingleThreadExecutor()
+    private val filesDir = context.applicationContext.filesDir
 
     /**
      * Gets a LiveData list of basketball games from the DB
@@ -56,6 +58,12 @@ class BasketballGameRepository private constructor(context: Context) {
             basketballGameDao.addGame(game)
         }
     }
+
+    /**
+     * Functions for getting each teams image file
+     */
+    fun getTeamAPhotoFile(game: BasketballGame): File = File(filesDir, game.teamAPhotoFileName)
+    fun getTeamBPhotoFile(game: BasketballGame): File = File(filesDir, game.teamBPhotoFileName)
 
     /**
      * Companion object that creates the Singleton Instance and holds its getter function

@@ -1,7 +1,7 @@
 package basketballCounter
 
 import androidx.lifecycle.ViewModel
-import java.util.*
+//import java.util.*
 
 /**
  * GameListViewModel
@@ -10,9 +10,8 @@ class GameListViewModel : ViewModel() {
 
     private val basketballGameRepository = BasketballGameRepository.get()
 
-
+/*
     // un-comment this to add 150 random entries to the db
-    private val games = mutableListOf<BasketballGame>()
     private val charPool: List<Char> = ('a'..'z') + ('A'..'Z') // list fo chars fro name generator
 
     //Create 150 games on initialization if there are none
@@ -46,7 +45,7 @@ class GameListViewModel : ViewModel() {
             basketballGameRepository.addGame(game)
         }
     }
-
+*/
 
     private val gameListLiveData = basketballGameRepository.getGames()
 

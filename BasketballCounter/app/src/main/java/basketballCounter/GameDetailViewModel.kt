@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import java.io.File
 import java.util.*
 
 private const val TAG =  "GameDetailViewModel"
@@ -34,5 +35,19 @@ class GameDetailViewModel: ViewModel() {
     fun saveGame(game: BasketballGame) {
         Log.d(TAG, "saveGame() called")
         basketballGameRepository.updateGame(game)
+    }
+
+    /**
+     * Function for getting team A's image file
+     */
+    fun getTeamAPhotoFile(game: BasketballGame): File {
+        return basketballGameRepository.getTeamAPhotoFile(game)
+    }
+
+    /**
+     * Function for getting team B's image file
+     */
+    fun getTeamBPhotoFile(game: BasketballGame): File {
+        return basketballGameRepository.getTeamBPhotoFile(game)
     }
 }

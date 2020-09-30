@@ -17,6 +17,7 @@ private const val EXTRA_Team_B_Name = "team_b_name"
 private const val EXTRA_Team_A_Score = "team_a_score"
 private const val EXTRA_Team_B_Score = "team_b_score"
 private const val EXTRA_Game_UUID = "game_uuid"
+private const val EXTRA_IS_NEW_GAME = "isNewGame"
 const val EXTRA_Score_Saved_UUID = "score_saved"
 
 /**
@@ -25,8 +26,9 @@ const val EXTRA_Score_Saved_UUID = "score_saved"
  */
 class SaveActivity : AppCompatActivity() {
 
-    // UUID of the game data to be displayed
+    // UUID of the game data to be displayed and boolean of if its a new game or not
     private var gameID: UUID? = null
+    private var isNewGame : Boolean? = null
 
     // declares all the UI elements that will be manipulated
     private lateinit var mainLabel: TextView
@@ -56,16 +58,18 @@ class SaveActivity : AppCompatActivity() {
         teamBScoreLabel = findViewById(R.id.score_b_label_save)
         backBtn = findViewById(R.id.back_btn)
 
-        // set the team names and scores based off the data stored in intent Extra's from MainActivity
+        // set the team names, scores, ID and isNewGame based off the data stored in intent Extra's from MainActivity
         teamAName.text = intent.getStringExtra(EXTRA_Team_A_Name)
         teamBName.text = intent.getStringExtra(EXTRA_Team_B_Name)
         teamAScoreLabel.text = intent.getStringExtra(EXTRA_Team_A_Score)
         teamBScoreLabel.text = intent.getStringExtra(EXTRA_Team_B_Score)
         gameID = intent.getSerializableExtra(EXTRA_Game_UUID) as UUID?
+        Log.d(TAG, gameID.toString())
+        isNewGame = intent.getBooleanExtra(EXTRA_IS_NEW_GAME, false)
 
         // set the mainLabel to updated or saved based on if a UUID was passed in or not
-        if(gameID != null) mainLabel.setText(R.string.updated_label)
-        else if(gameID == null) mainLabel.setText(R.string.saved_label)
+        if(isNewGame == false) mainLabel.setText(R.string.updated_label)
+        else if(isNewGame == true) mainLabel.setText(R.string.saved_label)
 
         //On Click Listeners for all the buttons
         backBtn.setOnClickListener { super.onBackPressed() }
@@ -80,17 +84,18 @@ class SaveActivity : AppCompatActivity() {
     private fun saveScores() {
         val basketballGameRepository = BasketballGameRepository.get()
 
-        // if there was a gameID passed in as an Extra, update the previous game data and send the UUID back
-        if(gameID != null){
-            val game = BasketballGame(gameID!!, Integer.valueOf(teamAScoreLabel.text.toString()),
-                Integer.valueOf(teamBScoreLabel.text.toString()), teamAName.text.toString(), teamBName.text.toString(), Calendar.getInstance().time)
+        // create the game to be saved or updated
+        val game = BasketballGame(gameID!!, Integer.valueOf(teamAScoreLabel.text.toString()),
+            Integer.valueOf(teamBScoreLabel.text.toString()), teamAName.text.toString(), teamBName.text.toString(), Calendar.getInstance().time)
+        gameDetailViewModel.saveGame(game)
+
+        // if isNewGame is false, update the existing game
+        if(!isNewGame!!){
             gameDetailViewModel.saveGame(game)
-            setScoreSavedShownResult(gameID!!)
+            setScoreSavedShownResult(game.id)
         }
-        // if there was NOT a gameID passed in as an Extra, save the new game data and send the UUID back
-        else if(gameID == null){
-            val game = BasketballGame(UUID.randomUUID(), Integer.valueOf(teamAScoreLabel.text.toString()),
-                Integer.valueOf(teamBScoreLabel.text.toString()), teamAName.text.toString(), teamBName.text.toString(), Calendar.getInstance().time)
+        // if isNewGame is true, add the new game
+        else if(isNewGame!!){
             basketballGameRepository.addGame(game)
             setScoreSavedShownResult(game.id)
         }
@@ -100,26 +105,16 @@ class SaveActivity : AppCompatActivity() {
      * Companion object with the newIntent function that MainActivity calls in order to pass data to this activity
      */
     companion object {
-        // intent with game data and the ID of the previous game
-        fun newIntent(packageContext: Context, teamAName: String, teamBName: String, teamAScore: Int, teamBScore: Int, gameID: UUID): Intent {
-            Log.d(TAG, "newIntent() with UUID called")
-            return Intent(packageContext, SaveActivity::class.java).apply {
-                putExtra(EXTRA_Team_A_Name, teamAName)
-                putExtra(EXTRA_Team_B_Name, teamBName)
-                putExtra(EXTRA_Team_A_Score, teamAScore.toString())
-                putExtra(EXTRA_Team_B_Score, teamBScore.toString())
-                putExtra(EXTRA_Game_UUID, gameID)
-            }
-        }
-
-        // intent with new game data to be added to the db
-        fun newIntent(packageContext: Context, teamAName: String, teamBName: String, teamAScore: Int, teamBScore: Int): Intent {
+        // intent with all the game data passed by  BasketballGameFragment
+        fun newIntent(packageContext: Context, teamAName: String, teamBName: String, teamAScore: Int, teamBScore: Int, gameID: UUID, isNewGame: Boolean): Intent {
             Log.d(TAG, "newIntent() called")
             return Intent(packageContext, SaveActivity::class.java).apply {
                 putExtra(EXTRA_Team_A_Name, teamAName)
                 putExtra(EXTRA_Team_B_Name, teamBName)
                 putExtra(EXTRA_Team_A_Score, teamAScore.toString())
                 putExtra(EXTRA_Team_B_Score, teamBScore.toString())
+                putExtra(EXTRA_Game_UUID, gameID)
+                putExtra(EXTRA_IS_NEW_GAME, isNewGame)
             }
         }
     }
@@ -127,9 +122,9 @@ class SaveActivity : AppCompatActivity() {
     /**
      * Method that states the scores have been saved/shown on screen and MainActivity needs a result
      */
-    private fun setScoreSavedShownResult(savedUUID: UUID) {
+    private fun setScoreSavedShownResult(gameID: UUID) {
         val data = Intent().apply {
-            putExtra(EXTRA_Score_Saved_UUID, savedUUID)
+            putExtra(EXTRA_Score_Saved_UUID, gameID)
         }
         setResult(Activity.RESULT_OK, data)
         Log.d(TAG, "setResult() called")

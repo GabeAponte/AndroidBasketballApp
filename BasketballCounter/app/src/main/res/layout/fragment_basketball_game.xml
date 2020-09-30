@@ -7,16 +7,29 @@
     android:background="@color/gray">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/weather_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="15dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:background="@color/black"
+            android:textAlignment="center"
+            tools:text="Weather Data"
+            style="@style/CelticsWhiText"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha=".85"
             android:background="@color/black"
             android:orientation="horizontal">
 
@@ -48,6 +61,49 @@
                     android:ellipsize="none"
                     android:maxLines="2"
                     android:scrollHorizontally="false"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@color/gray"
+                        android:contentDescription="@string/ImageView"
+                        android:id="@+id/teamA_image_view"
+                        android:layout_marginTop="5dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/teamA_image_button"
+                            style="@style/CelticsButton"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_camera_icon"
+                            android:contentDescription="@string/ImageView"
+                            />
+
+                        <ImageButton
+                            android:id="@+id/teamA_mic_button"
+                            style="@style/CelticsButton"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:src="@drawable/ic_mic"
+                            android:contentDescription="@string/ImageView"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/score_a_label"
@@ -117,6 +173,49 @@
                     android:textColorHint="@color/lakersPurple"
                     android:textSize="20sp"
                     android:background="@drawable/edit_text_bottom_border"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@color/gray"
+                        android:contentDescription="@string/ImageView"
+                        android:id="@+id/teamB_image_view"
+                        android:layout_marginTop="5dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/teamB_image_button"
+                            style="@style/LakersButton"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_camera_icon"
+                            android:contentDescription="@string/ImageView"
+                            />
+
+                        <ImageButton
+                            android:id="@+id/teamB_mic_button"
+                            style="@style/LakersButton"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:src="@drawable/ic_mic"
+                            android:contentDescription="@string/ImageView"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/score_b_label"
